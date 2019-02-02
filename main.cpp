@@ -43,7 +43,6 @@ char playMap[10][10] = {
 /*Window related variables for WINAPI*/
 HANDLE std_out;
 HANDLE consoleHandle;
-char *error_msg;
 COORD coordOrigin;
 COORD coordMap;
 
