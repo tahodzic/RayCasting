@@ -82,12 +82,15 @@ void drawScreen();
 
 /**
 Initializes and creates the console window 
+@return 0 on success, any other number on failure
 */
-void initWindow();
+int initWindow();
 
 
 int main() {
-	initWindow();
+	if (initWindow() != 0)
+		return -1;
+		
 	coordOrigin.X = 0;
 	coordOrigin.Y = 0;
 	coordMap.X = SCREENWIDTH - 10;
@@ -259,27 +262,30 @@ void drawScreen() {
 
 }
 
-void initWindow() {
+int initWindow() {
 	consoleHandle = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
 	COORD coordScreenBuffer = { SCREENWIDTH, SCREENHEIGHT + 1 };
 	SMALL_RECT windowSize = { 0, 0, SCREENWIDTH - 1, SCREENHEIGHT };
 
 	if (consoleHandle == INVALID_HANDLE_VALUE) {
-		int i = GetLastError();
+		return (GetLastError());
 	}
 
 	if (!SetConsoleActiveScreenBuffer(consoleHandle))
 	{
-		int i = GetLastError();
+		return (GetLastError());
+
 	}
 
 	if (!SetConsoleScreenBufferSize(consoleHandle, coordScreenBuffer)) {
-		int i = GetLastError();
+		return (GetLastError());
+
 	}
 
 	if (!SetConsoleWindowInfo(consoleHandle, TRUE, &windowSize))
 	{
-		int i = GetLastError();
-		i = i;
+		return (GetLastError());
 	}
+
+	return 0;
 }
